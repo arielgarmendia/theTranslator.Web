@@ -2,7 +2,81 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section id="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <label for="inputSource">Source Language</label>
+                <select class ="required form-control" id="inputSource" name="inputSource">
+                    <option value="en" selected>English</option>
+                    <option value="de">German</option>
+                    <option value="fr">French</option>
+                </select>
+            </div>
+            <div class="col">
+                <label for="inputDest">Destination Language</label>
+                <select class="required form-control" id="inputDest" name="inputDest">
+                    <option value="en">English</option>
+                    <option value="de" selected>German</option>
+                    <option value="fr">French</option>
+                </select>
+            </div>
+        </div>
+        <p></p>
+        <div class="row">
+            <div class="col">
+                <textarea rows="10" class="form-control" id="toTranslate" name="toTranslate" maxlength="4999"></textarea>
+                <p>Max. size 4999 chars</p>
+            </div>
+            <div class="col">
+                <textarea rows="10" class="required form-control" id="translationResult" name="translationResult" disabled></textarea>
+            </div>
+        </div>
+        <p></p>
+        <div class="row">
+            <div class="col text-right">
+                <a href="javascript:translateClicked();" class="btn btn-primary" role="button"><span>Translate</span></a>
+            </div>
+            <div class="col">
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function translateClicked() {
+        var allValid = true;
+
+        if (document.getElementById('toTranslate').value == '') {
+            if (allValid) {
+                allValid = false;
+                $("#toTranslate").focus();
+            }
+
+            $("#toTranslate").addClass('error');
+        }
+        else
+            $("#toTranslate").removeClass('error');
+
+        if (allValid) 
+        {
+            $.ajax({
+                url: '@ViewBag.APIurl',
+                crossDomain: true,
+                dataType: 'json',
+                type: 'GET',
+                traditional: true,
+                cache: false,
+                async: true,
+                data: {
+                    sourceLanguage: $("#inputSource").val(),
+                    destinationLanguage: $("#inputDest").val(),
+                    textToTranslate: $("#toTranslate").val()
+                },
+                success: function (response) {
+                    $("#translationResult").val(response.message);
+                }
+            });
+        }
+    }
+</script>
