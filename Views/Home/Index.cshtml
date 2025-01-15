@@ -36,6 +36,8 @@
         <div class="row">
             <div class="col text-right">
                 <a href="javascript:translateClicked();" class="btn btn-primary" role="button"><span>Translate</span></a>
+                <p></p>
+                <div id="status" name="status"></div>
             </div>
             <div class="col">
             </div>
@@ -60,6 +62,8 @@
 
         if (allValid) 
         {
+            $("#status").html("Loading translation...");
+
             $.ajax({
                 url: '@ViewBag.APIurl',
                 crossDomain: true,
@@ -74,7 +78,14 @@
                     textToTranslate: $("#toTranslate").val()
                 },
                 success: function (response) {
+                    $("#status").html("");
+
                     $("#translationResult").val(response.message);
+                },
+                error: function (response) {                     
+                    $("#status").html("");
+
+                    $("#translationResult").val("Error: Failed to contact API translation service.");
                 }
             });
         }
