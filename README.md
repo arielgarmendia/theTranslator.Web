@@ -18,7 +18,7 @@ Repo for dockerised translation Website that connects to ***theTranslator.API***
 - Web app has a fixed https port value assigned, to allow *CORS* operations between 2 domain separated apps: *Web* app and *API* service.
 - *Docker* container configured for *Windows OS*, to make it simpler.
 
-### Execution
+### Execution Plan
 
 - Clone the repository in your local machine.
 - Open solution with *Visual Studio*.
